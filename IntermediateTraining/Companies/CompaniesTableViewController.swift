@@ -2,7 +2,7 @@
 //  ViewController.swift
 //  IntermediateTraining
 //
-//  Created by Julio Cesar Hernandez-Duran on 12/27/17.
+//  Created on 12/27/17.
 //  Copyright © 2017 Damian Cesar. All rights reserved.
 //
 
@@ -28,8 +28,30 @@ class CompaniesTableViewController: UITableViewController {
         setupAddBarButtonItemInNavBar(selector: #selector(handleAddCompany))
         
         let resetBarButtonItem = UIBarButtonItem(title: "Reset", style: .plain, target: self, action: #selector(handleReset))
+        let doWorkBarButtonItem = UIBarButtonItem(title: "Do Work", style: .plain, target: self, action: #selector(doWork))
         
-        navigationItem.leftBarButtonItem = resetBarButtonItem
+        navigationItem.leftBarButtonItems = [resetBarButtonItem, doWorkBarButtonItem]
+    }
+    
+    @objc private func doWork() {
+        print("Trying to do work...")
+        
+        // Grand Central Dispatch
+        
+        CoreDataManager.shared.persistentContainer.performBackgroundTask { (backgroundContext) in
+            (0...20000).forEach { (value) in
+                print(value)
+                
+                let newCompany = Company(context: backgroundContext)
+                newCompany.name = "\(value)"
+            }
+            
+            do {
+                try backgroundContext.save()
+            } catch let error {
+                print(error)
+            }
+        }
     }
     
     @objc private func handleReset() {
