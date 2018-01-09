@@ -35,6 +35,7 @@ class CompaniesTableViewController: UITableViewController {
         
         navigationItem.leftBarButtonItems = [resetBarButtonItem, nestedUpdatesBarButtonItem]
 //        navigationItem.leftBarButtonItems = [resetBarButtonItem, doWorkBarButtonItem]
+
     }
     
     @objc private func doNestedUpdates() {

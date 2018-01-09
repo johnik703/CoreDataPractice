@@ -17,6 +17,8 @@
 		ECE2FE0A1FF5AB9400B44B48 /* CreateEditCompanyViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECE2FE091FF5AB9400B44B48 /* CreateEditCompanyViewController.swift */; };
 		ECE2FE0E1FF5EA9B00B44B48 /* CompaniesTableViewController+CreateCompany.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECE2FE0D1FF5EA9B00B44B48 /* CompaniesTableViewController+CreateCompany.swift */; };
 		ECE2FE121FF5EC5500B44B48 /* CompaniesTableViewController+UITableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECE2FE111FF5EC5500B44B48 /* CompaniesTableViewController+UITableView.swift */; };
+		ECEA448D2003BAAE006EFEB7 /* CompanyAutoUpdateController.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECEA448C2003BAAE006EFEB7 /* CompanyAutoUpdateController.swift */; };
+		ECEA448F2005326E006EFEB7 /* Service.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECEA448E2005326E006EFEB7 /* Service.swift */; };
 		ECEB61711FF47241006C6B3A /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECEB61701FF47241006C6B3A /* AppDelegate.swift */; };
 		ECEB61731FF47241006C6B3A /* CompaniesTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECEB61721FF47241006C6B3A /* CompaniesTableViewController.swift */; };
 		ECEB61781FF47241006C6B3A /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = ECEB61771FF47241006C6B3A /* Assets.xcassets */; };
@@ -39,6 +41,8 @@
 		ECE2FE091FF5AB9400B44B48 /* CreateEditCompanyViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CreateEditCompanyViewController.swift; sourceTree = "<group>"; };
 		ECE2FE0D1FF5EA9B00B44B48 /* CompaniesTableViewController+CreateCompany.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CompaniesTableViewController+CreateCompany.swift"; sourceTree = "<group>"; };
 		ECE2FE111FF5EC5500B44B48 /* CompaniesTableViewController+UITableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CompaniesTableViewController+UITableView.swift"; sourceTree = "<group>"; };
+		ECEA448C2003BAAE006EFEB7 /* CompanyAutoUpdateController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CompanyAutoUpdateController.swift; sourceTree = "<group>"; };
+		ECEA448E2005326E006EFEB7 /* Service.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Service.swift; sourceTree = "<group>"; };
 		ECEB616D1FF47241006C6B3A /* IntermediateTraining.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = IntermediateTraining.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		ECEB61701FF47241006C6B3A /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		ECEB61721FF47241006C6B3A /* CompaniesTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CompaniesTableViewController.swift; sourceTree = "<group>"; };
@@ -122,6 +126,7 @@
 			children = (
 				ECEB61701FF47241006C6B3A /* AppDelegate.swift */,
 				ECEB618B1FF4C385006C6B3A /* CoreDataManager.swift */,
+				ECEA448E2005326E006EFEB7 /* Service.swift */,
 				EC6E1F7F1FF707DB00E022B6 /* Helpers */,
 				EC6E1F861FF727CA00E022B6 /* Employees */,
 				ECE2FE091FF5AB9400B44B48 /* CreateEditCompanyViewController.swift */,
@@ -139,6 +144,7 @@
 			children = (
 				EC6E1F881FF7311700E022B6 /* CompanyTableViewCell.swift */,
 				ECEB61721FF47241006C6B3A /* CompaniesTableViewController.swift */,
+				ECEA448C2003BAAE006EFEB7 /* CompanyAutoUpdateController.swift */,
 				ECE2FE111FF5EC5500B44B48 /* CompaniesTableViewController+UITableView.swift */,
 				ECE2FE0D1FF5EA9B00B44B48 /* CompaniesTableViewController+CreateCompany.swift */,
 			);
@@ -282,10 +288,12 @@
 				EC6E1F7E1FF7059000E022B6 /* EmployeesTableViewController.swift in Sources */,
 				EC6E1F8D20006C7A00E022B6 /* EmployeeType.swift in Sources */,
 				ECEB61731FF47241006C6B3A /* CompaniesTableViewController.swift in Sources */,
+				ECEA448F2005326E006EFEB7 /* Service.swift in Sources */,
 				EC6E1F831FF70B2A00E022B6 /* CreateEmployeeViewController.swift in Sources */,
 				EC6E1F811FF707F000E022B6 /* UIViewController+Helpers.swift in Sources */,
 				EC6E1F891FF7311700E022B6 /* CompanyTableViewCell.swift in Sources */,
 				ECEB61711FF47241006C6B3A /* AppDelegate.swift in Sources */,
+				ECEA448D2003BAAE006EFEB7 /* CompanyAutoUpdateController.swift in Sources */,
 				ECEB618C1FF4C385006C6B3A /* CoreDataManager.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

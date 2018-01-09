@@ -33,9 +33,13 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         navBarAppearance.prefersLargeTitles = true
         navBarAppearance.titleTextAttributes = [NSAttributedStringKey.foregroundColor: UIColor.white]
         navBarAppearance.largeTitleTextAttributes = [NSAttributedStringKey.foregroundColor: UIColor.white]
+
         
-        let companiesVC = CompaniesTableViewController()
-        let navigationController = UINavigationController(rootViewController: companiesVC)
+        let companyAutoUpdateTVC = CompanyAutoUpdateController()
+        let navigationController = UINavigationController(rootViewController: companyAutoUpdateTVC)
+        
+//        let companiesVC = CompaniesTableViewController()
+//        let navigationController = UINavigationController(rootViewController: companiesVC)
         
         window?.rootViewController = navigationController
         
