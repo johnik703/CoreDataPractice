@@ -12,7 +12,7 @@ class EmployeeTableViewCell: UITableViewCell {
 
     var employee: Employee? {
         didSet {
-            textLabel?.text = employee?.name
+            textLabel?.text = employee?.fullName
             
             if let taxId = employee?.employeeInformation?.taxId {
                 print(taxId)

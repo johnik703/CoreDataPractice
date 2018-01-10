@@ -35,6 +35,13 @@ class CompanyAutoUpdateController: UITableViewController, NSFetchedResultsContro
         return frc
     }()
     
+    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        let employeesListController = EmployeesTableViewController()
+        employeesListController.company = fetchResultsController.object(at: indexPath)
+    
+        navigationController?.pushViewController(employeesListController, animated: true)
+    }
+    
     @objc private func handleAdd() {
         print("Add a company called bmw")
         
@@ -58,7 +65,7 @@ class CompanyAutoUpdateController: UITableViewController, NSFetchedResultsContro
         print("Attempting to delete")
         let request: NSFetchRequest<Company> = fetchResultsController.fetchRequest
         
-        request.predicate = NSPredicate(format: "name CONTAINS %@", "0")
+//        request.predicate = NSPredicate(format: "name CONTAINS %@", "0")
         
         let context = CoreDataManager.shared.persistentContainer.viewContext
         
@@ -86,18 +93,25 @@ class CompanyAutoUpdateController: UITableViewController, NSFetchedResultsContro
         
         navigationItem.title = "CompanyAutoUpdates"
         
-        navigationItem.leftBarButtonItems = [UIBarButtonItem(title: "Add",
-                                                             style: .plain,
-                                                             target: self,
-                                                             action: #selector(handleAdd)),
-                                             UIBarButtonItem(title: "Delete",
-                                                             style: .plain,
-                                                             target: self,
-                                                             action: #selector(handleDelete))]
+//        let addBarButtonItem = UIBarButtonItem(title: "Add", style: .plain, target: self, action: #selector(handleAdd))
+        let deleteBarButtonItem = UIBarButtonItem(title: "Delete", style: .plain, target: self, action: #selector(handleDelete))
+        
+        navigationItem.leftBarButtonItem = deleteBarButtonItem
         
         tableView.register(CompanyTableViewCell.self, forCellReuseIdentifier: cellId)
         
+        let refreshControl = UIRefreshControl()
+        refreshControl.addTarget(self, action: #selector(handleRefresh), for: .valueChanged)
+        refreshControl.tintColor = .white
+        
+        self.refreshControl = refreshControl
+    }
+    
+    @objc private func handleRefresh() {
+        print("Handle refresh")
+        
         Service.shared.downloadCompaniesFromServer()
+        self.refreshControl?.endRefreshing()
     }
     
     
@@ -139,14 +153,29 @@ class CompanyAutoUpdateController: UITableViewController, NSFetchedResultsContro
     }
     
     
-//    func controllerDidChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
-//
-//    }
+    func controllerDidChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
+        tableView.endUpdates()
+
+    }
     
     func controllerWillChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
         tableView.beginUpdates()
     }
     
+    
+    func controller(_ controller: NSFetchedResultsController<NSFetchRequestResult>, didChange sectionInfo: NSFetchedResultsSectionInfo, atSectionIndex sectionIndex: Int, for type: NSFetchedResultsChangeType) {
+        
+        
+        
+        switch (type) {
+        case .insert:
+            tableView.insertSections(NSIndexSet(index: sectionIndex) as IndexSet, with: .automatic)
+        case .delete:
+            tableView.deleteSections(NSIndexSet(index: sectionIndex) as IndexSet, with: .automatic)
+        default:
+            break
+        }
+    }
     func controller(_ controller: NSFetchedResultsController<NSFetchRequestResult>, didChange anObject: Any, at indexPath: IndexPath?, for type: NSFetchedResultsChangeType, newIndexPath: IndexPath?) {
         switch type {
         case .insert:
