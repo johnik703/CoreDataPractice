@@ -14,7 +14,7 @@ class CompanyTableViewCell: UITableViewCell {
         didSet {
             nameLabel.text = company?.name
             
-            nameLabel.text = "\(company?.name ?? "") \(company?.numberOfEmployees ?? ""))"
+//            nameLabel.text = "\(company?.name ?? "") \(company?.numberOfEmployees ?? ""))"
             
             if let imageData = company?.imageData {
                 companyImageView.image = UIImage(data: imageData)

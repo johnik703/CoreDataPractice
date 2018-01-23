@@ -20,6 +20,8 @@ class EmployeeTableViewCell: UITableViewCell {
         }
     }
     
+    
+    
     override init(style: UITableViewCellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         

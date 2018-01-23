@@ -2,7 +2,7 @@
 //  AppDelegate.swift
 //  IntermediateTraining
 //
-//  Created by Julio Cesar Hernandez-Duran on 12/27/17.
+//  Created on 12/27/17.
 //  Copyright © 2017 Damian Cesar. All rights reserved.
 //
 
@@ -19,28 +19,24 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     var window: UIWindow?
 
-
+    
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
         // Override point for customization after application launch.
         
-        window = UIWindow()
-        window?.makeKeyAndVisible()
-        
         let navBarAppearance = UINavigationBar.appearance()
         navBarAppearance.tintColor = .white
-        navBarAppearance.barTintColor = .lightRed
+        navBarAppearance.barTintColor = .mainBlue
         navBarAppearance.isTranslucent = false
         navBarAppearance.prefersLargeTitles = true
         navBarAppearance.titleTextAttributes = [NSAttributedStringKey.foregroundColor: UIColor.white]
         navBarAppearance.largeTitleTextAttributes = [NSAttributedStringKey.foregroundColor: UIColor.white]
-
         
-        let companyAutoUpdateTVC = CompanyAutoUpdateController()
-        let navigationController = UINavigationController(rootViewController: companyAutoUpdateTVC)
+        let companiesController = CompaniesTableViewController()
         
-//        let companiesVC = CompaniesTableViewController()
-//        let navigationController = UINavigationController(rootViewController: companiesVC)
+        let navigationController = UINavigationController(rootViewController: companiesController)
         
+        window = UIWindow()
+        window?.makeKeyAndVisible()
         window?.rootViewController = navigationController
         
         return true

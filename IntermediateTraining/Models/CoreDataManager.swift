@@ -13,6 +13,8 @@ struct CoreDataManager {
     
     static let shared = CoreDataManager()
     
+    private init(){}
+    
     let persistentContainer: NSPersistentContainer = {
         let container = NSPersistentContainer(name: "IntermediateTrainingModel")
         container.loadPersistentStores { (storeDescription, error) in
@@ -53,29 +55,32 @@ struct CoreDataManager {
         }
     }
     
-    func createEmployee(name: String, type: String, company: Company) -> (Employee?, Error?) {
+    func deleteCompany(_ company: Company) {
         let context = persistentContainer.viewContext
-        
-        let employee = NSEntityDescription.insertNewObject(forEntityName: "Employee", into: context) as! Employee
-        
-        employee.company = company
-        employee.type = type
-        
-        employee.setValue(name, forKey: "name")
-        
-        let employeeInformation = NSEntityDescription.insertNewObject(forEntityName: "EmployeeInformation", into: context) as! EmployeeInformation
-        
-        employeeInformation.taxId = "456"
-        
-        employee.employeeInformation = employeeInformation
+        context.delete(company)
         
         do {
             try context.save()
-            return (employee, nil)
+        } catch let error {
+            print("Failed to delete \(company.name ?? "company") from core data: \(error)")
+        }
+    }
+    
+    func createEmployee(firstName: String, lastName: String, type: String, company: Company) -> Employee? {
+        let context = persistentContainer.viewContext
+        
+        let employee = Employee(context: context)
+        employee.company = company
+        employee.type = type
+        employee.fullName = "\(firstName) \(lastName)"
+        
+        do {
+            try context.save()
+            return employee
             
         } catch let error {
-            print("Error creating employee: \(error)")
-            return (nil, error)
+            print("Error: Failed to create employee: \(error)")
+            return nil
         }
     }
     

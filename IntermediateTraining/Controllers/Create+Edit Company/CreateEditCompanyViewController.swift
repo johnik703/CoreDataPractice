@@ -7,8 +7,8 @@
 //
 
 import UIKit
-import SkyFloatingLabelTextField
 import CoreData
+import PureLayout
 
 protocol CreateEditCompanyControllerDelegate {
     func didCreateCompany(_ company: Company)
@@ -42,29 +42,23 @@ class CreateEditCompanyViewController: UIViewController, UINavigationControllerD
     private lazy var companyImageView: UIImageView = {
         let imageView = UIImageView()
         imageView.isUserInteractionEnabled = true
+        imageView.layer.borderWidth = 1.5
+        imageView.layer.borderColor = UIColor.lightGray.cgColor
+        imageView.clipsToBounds = true
         imageView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(handleSelectImage)))
         imageView.translatesAutoresizingMaskIntoConstraints = false
         return imageView
     }()
     
-    private lazy var selectImageButton: UIButton = {
-        let button = UIButton()
-        button.setTitle("Select Image", for: .normal)
-        button.setTitleColor(.lightRed, for: .normal)
-        button.addTarget(self, action: #selector(handleSelectImage), for: .touchUpInside)
-        button.translatesAutoresizingMaskIntoConstraints = false
-        return button
-    }()
-    
-    private let nameTextField: SkyFloatingLabelTextField = {
-        let textField = SkyFloatingLabelTextField()
+    private let nameTextField: CustomTextField = {
+        let textField = CustomTextField()
         textField.placeholder = "Company Name"
         textField.translatesAutoresizingMaskIntoConstraints = false
         return textField
     }()
     
-    private let foundedDateTextField: SkyFloatingLabelTextField = {
-        let textField = SkyFloatingLabelTextField()
+    private let foundedDateTextField: CustomTextField = {
+        let textField = CustomTextField()
         textField.placeholder = "Founding Date"
         textField.translatesAutoresizingMaskIntoConstraints = false
         return textField
@@ -76,38 +70,35 @@ class CreateEditCompanyViewController: UIViewController, UINavigationControllerD
         datePicker.addTarget(self, action: #selector(datePickerValueChanged), for: .valueChanged)
         return datePicker
     }()
-
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-
-        nameTextField.becomeFirstResponder()
-    }
-
+    
     override func viewDidLoad() {
         super.viewDidLoad()
+
+        view.backgroundColor = .white
+        
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.06) {
+            self.nameTextField.becomeFirstResponder()
+        }
         
         navigationItem.title = company == nil ? "Create Company" : "Edit Company"
         
         foundedDateTextField.inputView = foundedDatePicker
-        
-        view.backgroundColor = .white
     
         setupCancelBarButtonItemInNavBar(selector: #selector(handleCancel))
         setupSaveBarButtonItemInNavBar(selector: #selector(handleSave))
         
         setupSubviews()
     }
+   
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        
+        view.endEditing(true)
+    }
     
     private func setupSubviews() {
-        let imageStackView = UIStackView()
-        imageStackView.axis = .vertical
-        imageStackView.alignment = .center
-        imageStackView.spacing = 8
-        imageStackView.translatesAutoresizingMaskIntoConstraints = false
-
-        imageStackView.addArrangedSubview(companyImageView)
-        imageStackView.addArrangedSubview(selectImageButton)
-
+        view.addSubview(companyImageView)
+        
         let textFieldStackView = UIStackView()
         textFieldStackView.axis = .vertical
         textFieldStackView.alignment = .fill
@@ -123,23 +114,33 @@ class CreateEditCompanyViewController: UIViewController, UINavigationControllerD
         stackView.spacing = 16
         stackView.translatesAutoresizingMaskIntoConstraints = false
 
-        stackView.addArrangedSubview(imageStackView)
         stackView.addArrangedSubview(textFieldStackView)
 
         view.addSubview(stackView)
 
-        NSLayoutConstraint.activate([
-            stackView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 24),
-            stackView.leftAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leftAnchor, constant: 32),
-            stackView.rightAnchor.constraint(equalTo: view.safeAreaLayoutGuide.rightAnchor, constant: -32),
-            companyImageView.widthAnchor.constraint(equalToConstant: 120),
-            companyImageView.heightAnchor.constraint(equalToConstant: 120)
-        ])
+        nameTextField.autoSetDimension(.height, toSize: 50)
+        foundedDateTextField.autoSetDimension(.height, toSize: 50)
+        
+        companyImageView.autoPinEdge(.top, to: .top, of: view, withOffset: 16)
+        companyImageView.autoAlignAxis(.vertical, toSameAxisOf: view)
+        companyImageView.autoSetDimensions(to: CGSize(width: 120, height: 120))
+        
+        stackView.autoPinEdge(.left, to: .left, of: view, withOffset: 24.0)
+        stackView.autoPinEdge(.top, to: .bottom, of: companyImageView, withOffset: 8)
+        stackView.autoPinEdge(.right, to: .right, of: view, withOffset: -24.0)
+    }
+    
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+        
+        companyImageView.layer.cornerRadius = companyImageView.bounds.size.width / 2
+        
+//        setupCircularImageStyle()
     }
     
     private func setupCircularImageStyle() {
         companyImageView.layer.borderWidth = 2
-        companyImageView.layer.borderColor = UIColor.softGray.cgColor
+        companyImageView.layer.borderColor = UIColor.mainGray.cgColor
         companyImageView.layer.cornerRadius = companyImageView.frame.width / 2
         companyImageView.clipsToBounds = true
     }
@@ -200,10 +201,19 @@ class CreateEditCompanyViewController: UIViewController, UINavigationControllerD
             try context.save()
 
             dismiss(animated: true, completion: {
+                self.nameTextField.becomeFirstResponder()
                 self.delegate?.didCreateCompany(newCompany)
             })
         } catch let error {
             print("Failed to save company: \(error)")
+            
+            let alertController = UIAlertController(title: "Error Saving Company", message: "", preferredStyle: .alert)
+            
+            let okayAction = UIAlertAction(title: "Okay", style: .default, handler: nil)
+            
+            alertController.addAction(okayAction)
+            
+            present(alertController, animated: true)
         }
     }
     
